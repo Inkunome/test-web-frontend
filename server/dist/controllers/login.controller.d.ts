@@ -1,3 +1,6 @@
+import { UserProfile } from '@loopback/authentication';
 export declare class LoginController {
-    constructor();
+    private user;
+    constructor(user: UserProfile);
+    whoAmI(): string;
 }
