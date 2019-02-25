@@ -6,17 +6,23 @@ import Login from './views/Login.vue';
 
 Vue.use(Router);
 
-export default new Router({
+const router: Router = new Router({
   routes: [
     {
       path: '/',
       name: 'home',
       component: Home,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/login',
       name: 'login',
       component: Login,
+      meta: {
+        guest: true,
+      },
     },
     {
       path: '/about',
@@ -28,3 +34,19 @@ export default new Router({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    const credential = localStorage.getItem('user');
+
+    if (!credential) {
+      return next({
+        path: '/login',
+      });
+    }
+  }
+
+  next();
+});
+
+export default router;

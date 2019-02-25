@@ -1,89 +1,88 @@
 <template>
-      <form novalidate class="md-layout md-alignment-center-center" @submit.prevent="validateUser">
-        <md-card class="md-layout-item md-size-25 md-small-size-100">
-          <md-card-header>
-            <div class="md-title">{{ title }}</div>
-          </md-card-header>
+  <form novalidate class="md-layout md-alignment-center-center" @submit.prevent="validateUser">
+    <md-card class="md-layout-item md-size-25 md-small-size-100">
+      <md-card-header>
+        <div class="md-title">{{ title }}</div>
+      </md-card-header>
 
-          <md-card-content>
-                <md-field :class="getValidationClass('firstName')">
-                  <label for="username">Username</label>
-                  <md-input
-                    name="username"
-                    id="username"
-                    autocomplete="password"
-                    v-model="form.username"
-                    :disabled="sending"
-                  />
-                  <span
-                    class="md-error"
-                    v-if="!$v.form.username.required"
-                  >The username is required</span>
-                  <span class="md-error" v-else-if="!$v.form.username.minlength">Invalid username</span>
-                </md-field>
+      <md-card-content>
+        <md-field :class="getValidationClass('firstName')">
+          <label for="username">Username</label>
+          <md-input
+            name="username"
+            id="username"
+            autocomplete="password"
+            v-model="form.username"
+            :disabled="sending"
+          />
+          <span class="md-error" v-if="!$v.form.username.required">The username is required</span>
+          <span class="md-error" v-else-if="!$v.form.username.minlength">Invalid username</span>
+        </md-field>
 
-                <md-field :class="getValidationClass('password')">
-                  <label for="password">Password</label>
-                  <md-input
-                    name="password"
-                    id="password"
-                    type="password"
-                    v-model="form.password"
-                    :disabled="sending"
-                  />
-                  <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
-                  <span class="md-error" v-else-if="!$v.form.password.minlength">Invalid password</span>
-                </md-field>
+        <md-field :class="getValidationClass('password')">
+          <label for="password">Password</label>
+          <md-input
+            name="password"
+            id="password"
+            type="password"
+            v-model="form.password"
+            :disabled="sending"
+          />
+          <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
+          <span class="md-error" v-else-if="!$v.form.password.minlength">Invalid password</span>
+        </md-field>
 
-            <md-progress-bar md-mode="indeterminate" v-if="sending"/>
+        <md-progress-bar md-mode="indeterminate" v-if="sending"/>
 
-            <md-card-actions>
-              <md-button type="submit" class="md-primary" :disabled="sending">{{ action }}</md-button>
-            </md-card-actions>
-          </md-card-content>
-        </md-card>
+        <md-card-actions>
+          <md-button type="submit" class="md-primary" :disabled="sending">{{ actionText }}</md-button>
+        </md-card-actions>
+      </md-card-content>
+    </md-card>
 
-        <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
-      </form>
+    <md-snackbar :md-active.sync="userSaved">The user was saved with success!</md-snackbar>
+  </form>
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate';
+import { validationMixin } from "vuelidate";
 import {
   required,
   email,
   minLength,
   maxLength
-} from 'vuelidate/lib/validators';
+} from "vuelidate/lib/validators";
 
 export default {
-  name: 'LoginForm',
+  name: "LoginForm",
   mixins: [validationMixin],
 
   data: () => ({
     form: {
       username: null,
-      password: null,
+      password: null
     },
     sending: false,
+    userSaved: false
   }),
 
   props: {
     title: String,
-    action: String,
+    actionText: String,
+    action: Function
   },
 
   validations: {
     form: {
       username: {
         required,
-        minLength: minLength(3),
+        minLength: minLength(3)
       },
       password: {
         required,
-        minLength: minLength(3),
-      },
-    },
+        minLength: minLength(3)
+      }
+    }
   },
   methods: {
     getValidationClass(fieldName) {
@@ -91,7 +90,7 @@ export default {
 
       if (field) {
         return {
-          'md-invalid': field.$invalid && field.$dirty,
+          "md-invalid": field.$invalid && field.$dirty
         };
       }
     },
@@ -113,10 +112,12 @@ export default {
         this.saveUser();
 
         const response = await fetch("http://localhost:3000/users");
-        console.log(await response.json())
+        const json = await response.json();
+
+        this.$emit("new-user", json);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
