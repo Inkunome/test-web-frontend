@@ -32,9 +32,10 @@ export class MySequence implements SequenceHandler {
       try {
         await this.authenticateRequest(request);
       } catch (err) {
-        return response.status(401), this.send(response, "Unauthorized");
-      }
+        response.status(401);
 
+        return this.send(response, "Unauthorized");
+      }
 
       const args = await this.parseParams(request, route);
       const result = await this.invoke(route, args);

@@ -11,6 +11,9 @@ import LoginForm from '@/components/LoginForm.vue'; // @ is an alias to /src
 
 export default Vue.extend({
   name: 'login',
+  data: () => ({
+    hello: "foo",
+  }),
   components: {
     LoginForm,
   },

@@ -12,8 +12,12 @@ export class LoginController {
   ) { }
 
   @authenticate('BasicStrategy')
-  @get('/whoami')
-  whoAmI(): string {
-    return this.user.id;
+  @get('/login')
+  login(): string {
+    try {
+      return JSON.stringify(true);
+    } catch {
+      return JSON.stringify(false);
+    }
   }
 }

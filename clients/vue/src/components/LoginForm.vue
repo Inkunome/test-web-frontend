@@ -44,7 +44,7 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import { validationMixin } from "vuelidate";
 import {
   required,
@@ -52,6 +52,8 @@ import {
   minLength,
   maxLength
 } from "vuelidate/lib/validators";
+
+import base64 from "base-64";
 
 export default {
   name: "LoginForm",
@@ -62,12 +64,12 @@ export default {
       username: null,
       password: null
     },
+    title: "",
     sending: false,
     userSaved: false
   }),
 
   props: {
-    title: String,
     actionText: String,
     action: Function
   },
@@ -85,8 +87,10 @@ export default {
     }
   },
   methods: {
-    getValidationClass(fieldName) {
-      const field = this.$v.form[fieldName];
+    getValidationClass(fieldName: string) {
+      const form = this.$v.form!;
+
+      const field: any = (form as any)[fieldName];
 
       if (field) {
         return {
@@ -101,20 +105,44 @@ export default {
       this.form.password = null;
     },
 
-    saveUser() {
-      this.sending = true;
-    },
+    saveUser() {},
 
     async validateUser() {
       this.$v.$touch();
 
       if (!this.$v.$invalid) {
-        this.saveUser();
+        this.sending = true;
 
-        const response = await fetch("http://localhost:3000/users");
-        const json = await response.json();
+        const username = this.form.username;
+        const password = this.form.password;
 
-        this.$emit("new-user", json);
+        const headers = new Headers();
+        headers.set(
+          "Authorization",
+          "Basic " + base64.encode(username + ":" + password)
+        );
+
+        const response = await fetch("http://localhost:3000/threads", {
+          method: "GET",
+          headers: headers,
+          mode: "cors"
+        });
+
+        if (response.status === 401) {
+          this.title = "Bad password";
+        } else {
+          localStorage.setItem("credential", JSON.stringify({
+            username,
+            password
+          }));
+
+          const json = await response.json();
+
+
+          this.$emit("new-user", json);
+        }
+
+        this.sending = false;
       }
     }
   }

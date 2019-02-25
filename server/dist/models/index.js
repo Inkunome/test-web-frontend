@@ -4,4 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./user.model"));
+__export(require("./thread.model"));
+__export(require("./message.model"));
 //# sourceMappingURL=index.js.map

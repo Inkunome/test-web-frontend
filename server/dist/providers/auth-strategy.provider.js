@@ -36,6 +36,7 @@ let MyAuthStrategyProvider = class MyAuthStrategyProvider {
         }
     }
     verify(username, password, cb) {
+        console.log(username, password);
         this.userRepository.findById(username).then((user) => {
             // Why encrypt? :)
             if (user.password === password) {

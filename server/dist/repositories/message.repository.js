@@ -12,32 +12,18 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const context_1 = require("@loopback/context");
-const authentication_1 = require("@loopback/authentication");
-const rest_1 = require("@loopback/rest");
-let LoginController = class LoginController {
-    constructor(user) {
-        this.user = user;
-    }
-    login() {
-        try {
-            return JSON.stringify(true);
-        }
-        catch (_a) {
-            return JSON.stringify(false);
-        }
+const repository_1 = require("@loopback/repository");
+const models_1 = require("../models");
+const datasources_1 = require("../datasources");
+const core_1 = require("@loopback/core");
+let MessageRepository = class MessageRepository extends repository_1.DefaultCrudRepository {
+    constructor(dataSource) {
+        super(models_1.Message, dataSource);
     }
 };
-__decorate([
-    authentication_1.authenticate('BasicStrategy'),
-    rest_1.get('/login'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], LoginController.prototype, "login", null);
-LoginController = __decorate([
-    __param(0, context_1.inject(authentication_1.AuthenticationBindings.CURRENT_USER)),
-    __metadata("design:paramtypes", [Object])
-], LoginController);
-exports.LoginController = LoginController;
-//# sourceMappingURL=login.controller.js.map
+MessageRepository = __decorate([
+    __param(0, core_1.inject('datasources.db')),
+    __metadata("design:paramtypes", [datasources_1.DbDataSource])
+], MessageRepository);
+exports.MessageRepository = MessageRepository;
+//# sourceMappingURL=message.repository.js.map

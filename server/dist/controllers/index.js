@@ -6,4 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./ping.controller"));
 __export(require("./login.controller"));
 __export(require("./user.controller"));
+__export(require("./thread.controller"));
+__export(require("./message.controller"));
 //# sourceMappingURL=index.js.map
