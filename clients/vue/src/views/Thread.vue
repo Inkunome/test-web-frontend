@@ -1,15 +1,15 @@
 <template>
-  <HelloWorld/>
+  <Thread/>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import HelloWorld from "@/components/Home.vue"; // @ is an alias to /src
+import Thread from "@/components/Thread.vue"; // @ is an alias to /src
 
 export default Vue.extend({
-  name: "home",
+  name: "thread",
   components: {
-    HelloWorld
+    Thread
   }
 });
 </script>

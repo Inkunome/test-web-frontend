@@ -45,6 +45,8 @@
 </template>
 
 <script lang="ts">
+import Vue from "vue";
+
 import { validationMixin } from "vuelidate";
 import {
   required,
@@ -55,7 +57,7 @@ import {
 
 import base64 from "base-64";
 
-export default {
+export default Vue.extend({
   name: "LoginForm",
   mixins: [validationMixin],
 
@@ -71,21 +73,22 @@ export default {
 
   props: {
     actionText: String,
-    action: Function
+    action: Function,
   },
 
   validations: {
     form: {
       username: {
         required,
-        minLength: minLength(3)
+        minLength: minLength(3),
       },
       password: {
         required,
-        minLength: minLength(3)
+        minLength: minLength(3),
       }
     }
   },
+
   methods: {
     getValidationClass(fieldName: string) {
       const form = this.$v.form!;
@@ -138,15 +141,14 @@ export default {
 
           const json = await response.json();
 
-
-          this.$emit("new-user", json);
+          this.$router.push({ name : "home" });
         }
 
         this.sending = false;
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <img alt="Vue logo" src="../assets/logo.png">
-    <LoginForm title="" @new-user="login" actionText="Sign in" />
+    <LoginForm title="" actionText="Sign in" />
   </div>
 </template>
 
@@ -17,10 +17,6 @@ export default Vue.extend({
   components: {
     LoginForm,
   },
-  methods: {
-    login(json: any) {
-      alert(`Hello world ${JSON.stringify(json)}`);
-    }
-  }
+  methods: {},
 });
 </script>
