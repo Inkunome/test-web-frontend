@@ -1,0 +1,8 @@
+<mat-form-field>
+  <textarea matInput placeholder="{{ 'enter-your-message' | translate }}" [(ngModel)]="message"></textarea>
+  <button mat-button (click)="sendMessage()">{{ 'send-message' | translate }}</button>
+</mat-form-field>
+
+<mat-list>
+ <mat-list-item *ngFor="let message of messages"><markdown [data]="message.content"></markdown></mat-list-item>
+</mat-list>

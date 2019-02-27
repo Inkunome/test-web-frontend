@@ -1,0 +1,11 @@
+<form class="example-form" (ngSubmit)="onSubmit()">
+  <mat-form-field class="example-full-width">
+    <input matInput type="text" placeholder="username" name="username" [(ngModel)]="credential.username">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput type="text" placeholder="password" name="password" [(ngModel)]="credential.password">
+  </mat-form-field>
+
+  <input type="submit" />
+</form>

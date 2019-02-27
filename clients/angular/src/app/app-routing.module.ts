@@ -1,16 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { ThreadsComponent } from './threads/threads.component';
+import { ThreadDetailComponent } from './thread-detail/thread-detail.component';
+
+import { AuthGuardService as AuthGuard } from './auth-guard.service';
 
 const routes: Routes = [
-  { path: '', component: AppComponent },
-  { path: 'login', component: AppComponent },
+  { path: '', component: ThreadsComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
   {
     path: 'thread/:descriptor',
-    component: AppComponent,
+    component: ThreadDetailComponent,
+    canActivate: [AuthGuard],
   },
-  { path: '*', redirectTo: '/' }
+  { path: '**', redirectTo: '/' }
 ];
 
 @NgModule({
