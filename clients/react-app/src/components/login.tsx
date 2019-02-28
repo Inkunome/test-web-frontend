@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 
 import PropTypes from "prop-types";
 import {
@@ -11,7 +11,7 @@ import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 
 import { encode } from "base-64";
-import { Redirect } from "react-router";
+import { History } from "history";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -28,22 +28,21 @@ const styles = (theme: Theme) =>
     }
   });
 
-export interface Props extends WithStyles<typeof styles> {}
+export interface Props extends WithStyles<typeof styles> {
+  history: History;
+}
 
 export interface Form {
   username: string;
   password: string;
 }
 
-export interface State extends Form {
-  logged: boolean;
-}
+export interface State extends Form {}
 
-class TextFields extends React.Component<Props, State> {
+class TextFields extends Component<Props, State> {
   state: State = {
     username: "",
     password: "",
-    logged: (localStorage.getItem('credential') !== null),
   };
 
   handleChange = (name: keyof Form) => (
@@ -73,17 +72,11 @@ class TextFields extends React.Component<Props, State> {
         })
       );
 
-      this.setState({
-        logged: true
-      });
+      this.props.history.push('/');
     }
   };
 
   render() {
-    if (this.state.logged) {
-      return <Redirect to="/" />;
-    }
-
     const { classes } = this.props;
 
     return (
